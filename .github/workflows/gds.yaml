@@ -27,7 +27,7 @@ jobs:
           echo "OPENFPGALOADER_SOJ_DIR=/usr/local/share/silice/oss-cad-suite/share/openFPGALoader" >> $GITHUB_ENV
       - name: Build project
         shell: bash
-        working-directory: ./src/silice
+        working-directory: ../src/silice
         run : |
           make tinytapeout
 
