@@ -28,7 +28,6 @@ jobs:
           echo "(mv bins)"
           sudo mv release/bin/* /usr/bin/
           echo "path setup ..."
-          echo "PREVIOUS_PATH=$GITHUB_PATH" >> $GITHUB_ENV
           echo '/usr/local/share/silice/oss-cad-suite/bin/' >>"${GITHUB_PATH}"
           echo '/usr/local/share/silice/oss-cad-suite/lib/' >>"${GITHUB_PATH}"
           echo '/usr/local/share/silice/oss-cad-suite/share/verilator/bin/' >>"${GITHUB_PATH}"
@@ -38,8 +37,6 @@ jobs:
           echo "GDK_PIXBUF_MODULEDIR=/usr/local/share/silice/oss-cad-suite/lib/gdk-pixbuf-2.0/2.10.0/loaders" >> $GITHUB_ENV
           echo "GDK_PIXBUF_MODULE_FILE=/usr/local/share/silice/oss-cad-suite/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" >> $GITHUB_ENV
           echo "OPENFPGALOADER_SOJ_DIR=/usr/local/share/silice/oss-cad-suite/share/openFPGALoader" >> $GITHUB_ENV
-          echo $PREVIOUS_PATH
-          echo $GITHUB_PATH
           echo "done."
 
       - name: Build project
@@ -48,12 +45,10 @@ jobs:
         run : |
           make tinytapeout
 
-      - name: Restore path
+      - name: Cleanup
         shell: bash
         run : |
-          echo $PREVIOUS_PATH
-          echo $PREVIOUS_PATH > "${GITHUB_PATH}"
-          echo $GITHUB_PATH
+          sudo rm -rf /usr/local/share/silice
 
       - name: Install iverilog
         shell: bash
