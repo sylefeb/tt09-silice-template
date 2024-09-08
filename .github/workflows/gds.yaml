@@ -30,6 +30,11 @@ jobs:
         working-directory: ./src/silice
         run : |
           make tinytapeout
+      - name: Build project
+        shell: bash
+        working-directory: ./src/
+        run : |
+          ls -la
 
   gds:
     needs: build-silice
