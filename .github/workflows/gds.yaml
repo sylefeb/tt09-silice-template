@@ -5,9 +5,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-silice:
+
+  gds:
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out repository
         uses: actions/checkout@v4
         with:
@@ -34,17 +36,6 @@ jobs:
         working-directory: ./src/silice
         run : |
           make tinytapeout
-
-      - name: Build project
-        shell: bash
-        working-directory: ./src/
-        run : |
-          ls -la
-
-  gds:
-    needs: build-silice
-    runs-on: ubuntu-latest
-    steps:
 
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@tt09
