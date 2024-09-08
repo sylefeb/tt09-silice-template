@@ -1,0 +1,73 @@
+// SL 2024-08-16 @sylefeb
+// ========================================================
+//
+// ========================================================
+// https://github.com/sylefeb/Silice
+// MIT license, see LICENSE_MIT in Silice repo root
+// ========================================================
+
+$$if not ICE40 then
+$$error('This version is for icebreaker simulation')
+$$end
+
+$include('vga_demo.si')
+$include('i2s.si')
+
+$$if ECPIX5_SIM then
+$$pin.i2s_bck = {pin.P2A2}
+$$pin.i2s_din = {pin.P2A3}
+$$pin.i2s_lck = {pin.P2A4}
+$$end
+
+unit main(
+  output  uint5 leds,
+$$if ECPIX5_SIM then
+  output uint6 video_r,
+  output uint6 video_g,
+  output uint6 video_b,
+  output uint1 video_hs,
+  output uint1 video_vs,
+  output uint1 i2s_bck,
+  output uint1 i2s_din,
+  output uint1 i2s_lck,
+$$elseif ULX3S_SIM then
+  output uint4 audio_l,
+  output uint4 audio_r,
+$$else
+  $$error('board not supported')
+$$end
+) {
+
+  vga_demo demo;
+
+$$if ECPIX5_SIM then
+  audio_pcm_i2s audio;
+$$end
+
+  always {
+$$if ECPIX5_SIM then
+    video_r = (demo.video_r == 2b01 ? $63//3$ : 0)
+            | (demo.video_r == 2b10 ? $63*2//3$ : 0)
+            | (demo.video_r == 2b11 ? $63$ : 0);
+    video_g = (demo.video_g == 2b01 ? $63//3$ : 0)
+            | (demo.video_g == 2b10 ? $63*2//3$ : 0)
+            | (demo.video_g == 2b11 ? $63$ : 0);
+    video_b = (demo.video_b == 2b01 ? $63//3$ : 0)
+            | (demo.video_b == 2b10 ? $63*2//3$ : 0)
+            | (demo.video_b == 2b11 ? $63$ : 0);
+    video_hs = demo.video_hs;
+    video_vs = demo.video_vs;
+    leds    = {5{demo.video_vs}};
+    i2s_lck = audio.i2s[3,1];
+    i2s_din = audio.i2s[2,1];
+    i2s_bck = audio.i2s[1,1];
+    audio.sample = demo.audio8;
+$$else
+    audio_l = {3b0,demo.audio1};
+    audio_r = {3b0,demo.audio1};
+$$end
+  }
+
+}
+
+// --------------------------------------------------
