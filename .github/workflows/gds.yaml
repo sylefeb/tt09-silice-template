@@ -32,6 +32,7 @@ jobs:
           make tinytapeout
 
   gds:
+    needs: build-silice
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo
