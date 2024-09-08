@@ -5,11 +5,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-silice:
+
+  gds:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+
+      - name: checkout repo
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       - name: Install Silice
         shell: bash
         run: |
@@ -25,25 +30,12 @@ jobs:
           echo "GDK_PIXBUF_MODULEDIR=/usr/local/share/silice/oss-cad-suite/lib/gdk-pixbuf-2.0/2.10.0/loaders" >> $GITHUB_ENV
           echo "GDK_PIXBUF_MODULE_FILE=/usr/local/share/silice/oss-cad-suite/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" >> $GITHUB_ENV
           echo "OPENFPGALOADER_SOJ_DIR=/usr/local/share/silice/oss-cad-suite/share/openFPGALoader" >> $GITHUB_ENV
-      - name: Build project
+
+      - name: Build Silice project
         shell: bash
         working-directory: ./src/silice
         run : |
           make tinytapeout
-      - name: Build project
-        shell: bash
-        working-directory: ./src/
-        run : |
-          ls -la
-
-  gds:
-    needs: build-silice
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@tt09
