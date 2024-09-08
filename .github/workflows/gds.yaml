@@ -10,6 +10,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Test1
+        shell: bash
+        run : |
+          echo ${GITHUB_WORKSPACE}
+          ls
+      - name: Test2
+        shell: bash
+        working-directory: ./src/silice
+        run : |
+          echo ${GITHUB_WORKSPACE}
       - name: Install Silice
         shell: bash
         run: |
