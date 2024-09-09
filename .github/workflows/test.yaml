@@ -10,7 +10,7 @@ jobs:
           submodules: recursive
 
       - name: Install Silice
-        uses: ./.github/workflows/silice.yaml
+        uses: sylefeb/silice-for-github@v1
 
       - name: Build project
         shell: bash
