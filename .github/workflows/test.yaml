@@ -10,34 +10,7 @@ jobs:
           submodules: recursive
 
       - name: Install Silice
-        shell: bash
-        run: |
-          echo "dependencies ..."
-          pip3 install termcolor
-          pip3 install edalize
-          echo "downloading ..."
-          wget -c https://github.com/sylefeb/silice-for-github/releases/download/bucket-linux-x64/release.tgz
-          echo "decompressing ..."
-          tar xvfz release.tgz
-          echo "installing ..."
-          echo "(mkdir)"
-          sudo mkdir -p /usr/local/share/
-          echo "(mv silice)"
-          sudo mv release/silice /usr/local/share/
-          ls -la /usr/local/share/silice
-          echo "(mv bins)"
-          sudo mv release/bin/* /usr/bin/
-          echo "path setup ..."
-          echo '/usr/local/share/silice/oss-cad-suite/bin/' >>"${GITHUB_PATH}"
-          echo '/usr/local/share/silice/oss-cad-suite/lib/' >>"${GITHUB_PATH}"
-          echo '/usr/local/share/silice/oss-cad-suite/share/verilator/bin/' >>"${GITHUB_PATH}"
-          echo "QT_PLUGIN_PATH=/usr/local/share/silice/oss-cad-suite/lib/qt5/plugins" >> $GITHUB_ENV
-          echo "GTK_EXE_PREFIX=/usr/local/share/silice/oss-cad-suite/" >> $GITHUB_ENV
-          echo "GTK_DATA_PREFIX=/usr/local/share/silice/oss-cad-suite/" >> $GITHUB_ENV
-          echo "GDK_PIXBUF_MODULEDIR=/usr/local/share/silice/oss-cad-suite/lib/gdk-pixbuf-2.0/2.10.0/loaders" >> $GITHUB_ENV
-          echo "GDK_PIXBUF_MODULE_FILE=/usr/local/share/silice/oss-cad-suite/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" >> $GITHUB_ENV
-          echo "OPENFPGALOADER_SOJ_DIR=/usr/local/share/silice/oss-cad-suite/share/openFPGALoader" >> $GITHUB_ENV
-          echo "done."
+        uses: ./.github/workflows/silice.yaml
 
       - name: Build project
         shell: bash
