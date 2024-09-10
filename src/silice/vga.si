@@ -9,8 +9,8 @@ unit vga(
   output uint1  vga_vs(0),
   output uint1  active,
   output uint1  vblank,
-  output uint12 vga_x,
-  output uint11 vga_y
+  output uint10 vga_x,
+  output uint9  vga_y
 ) {
 
 //_ default to 640x480@60 (25MHz pixel clock)
@@ -58,8 +58,8 @@ $$V_END    = V_FRT_PORCH + V_SYNCH + V_BCK_PORCH + V_RES
 
     active = active_h && active_v;
 
-    vga_x  = active_h ? xcount : 0;
-    vga_y  = active_v ? ycount : 0;
+    vga_x  = active_h ? xcount[0,10] : 10b0;
+    vga_y  = active_v ? ycount[0, 9] :  9b0;
 
     vga_hs = xcount == $HS_START-HA_START$ ? 0
            : xcount == $HS_END-HA_START-1$ ? 1
@@ -71,9 +71,9 @@ $$V_END    = V_FRT_PORCH + V_SYNCH + V_BCK_PORCH + V_RES
     vblank = ycount[9,1]; // sign bit
 
     if (xcount == $H_END-HA_START$) {
-      xcount = __signed($-HA_START+1$);
+      xcount = -11d$HA_START+1$;
       if (ycount == $V_END-VA_START$) {
-        ycount = __signed($-VA_START+1$);
+        ycount = -10d$VA_START+1$;
       } else {
         ycount = ycount + 1;
 	    }
