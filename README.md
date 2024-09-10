@@ -19,8 +19,8 @@ To learn more and get started, visit https://tinytapeout.com.
 1. Edit and add silice files into the `src/silice` folder.
 2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `top_module` properties. You have to choose a new name for the top module, replacing `tt_um_projectname` by a different name starting with `tt_um_`. The name has to be updated in different locations:
    - [info.yaml](info.yaml)
-   - [Silice Makefile](src/silice/Makefile)
-   - [test bench](test/tb.v)
+   - Silice [Makefile](src/silice/Makefile)
+   - test bench [tb.v](test/tb.v)
 
 > If these names are not properly updated and/or the info.md file mandatory information is not specified, the github automated actions will report errors.
 
